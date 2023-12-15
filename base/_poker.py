@@ -13,32 +13,65 @@
 # каре
 # (5, 5, 5, 4, 5)
 
-hand = tuple(int(card) for card in input(' > ').split())
-combination = 'старшая карта'
 
-unique_cards = set(hand)
-uniques = len(unique_cards)
-max_count = max(hand.count(card) for card in unique_cards)
+# длинные аннотации сохраняются в отдельные переменные
+FiveCards = tuple[int, int, int, int, int]
 
-if uniques == 4:
-    combination = 'пара'
 
-elif uniques == 3:
-    if max_count == 2:
-        combination = 'две пары'
-    elif max_count == 3:
-        combination = 'сет'
+def combination(hand: FiveCards) -> str:
+    """В переданной последовательности номиналов пяти карт находит самую старшую комбинацию покера (техасский холдем)."""
+    unique_cards = set(hand)
+    uniques = len(unique_cards)
+    
+    if uniques == 4:
+        return 'пара'
+    
+    max_count = max(hand.count(card) for card in unique_cards)
+    if uniques == 3:
+        if max_count == 2:
+            return 'две пары'
+        elif max_count == 3:
+            return 'сет'
+    
+    # if sorted(hand) == list(range(min(hand), min(hand)+5)):
+    #     return 'стрит'
+    
+    if uniques == 5 and max(hand) - min(hand) == 4:
+        return 'стрит'
+    
+    if uniques == 2:
+        if max_count == 3:
+            return 'фулл-хаус'
+        elif max_count == 4:
+            return 'каре'
+    
+    return 'старшая карта'
 
-# elif sorted(hand) == list(range(min(hand), min(hand)+5)):
-#     combination = 'стрит'
 
-elif uniques == 5 and max(hand) - min(hand) == 4:
-    combination = 'стрит'
+def get_hand() -> FiveCards:
+    """Возвращает кортеж из пяти целых чисел, полученных из одной строки стандартного потока ввода (stdin)."""
+    return tuple(int(card) for card in input(' > ').strip().split())
 
-elif uniques == 2:
-    if max_count == 3:
-        combination = 'фулл-хаус'
-    elif max_count == 4:
-        combination = 'каре'
 
-print(combination)
+# >>> get_hand()
+#  > 9 3 8 9 12
+# (9, 3, 8, 9, 12)
+# >>>
+#>>> combination(get_hand())
+# > 9 3 8 9 12
+#'пара'
+# >>>
+# >>> combination([10, 5, 10, 10, 6])
+# 'сет'
+# >>>
+# >>> combination
+# <function combination at 0x00000141A174EFC0>
+# >>>
+# >>> combination.__name__
+# 'combination'
+# >>>
+# >>> combination.__doc__
+# 'В переданной последовательности номиналов пяти карт находит самую старшую комбинацию покера (техасский холдем).'
+# >>>
+# >>> get_hand.__doc__
+# 'Возвращает кортеж из пяти целых чисел, полученных из одной строки стандартного потока ввода (stdin).'
