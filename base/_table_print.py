@@ -14,9 +14,9 @@ def table_format(
     :param v_sep: вертикальный разделитель столбцов таблицы
     :param align: горизонтальное выравнивание данных в столбце; допустимые значения: '<' - влево, '^' - по центру, '>' - вправо
     """
-    # добавление обязательного столбца в кортеж
+    # добавление обязательного столбца таблицы в кортеж
     columns = column1, *columns
-    # подсчёт наибольшего количества символов в каждом столбце
+    # подсчёт наибольшего количества символов в каждом столбце таблицы
     c_width = [
         max(len(str(cell)) for cell in col)
         for col in columns
@@ -26,6 +26,7 @@ def table_format(
         # формирование одной строки таблицы
         v_sep.join(
             f'{row[i]:{align}{c_width[i]}}' 
+            # i - индекс столбца таблицы
             for i in range(cnt_cols)
         )
         for row in zip(*columns)
@@ -68,6 +69,7 @@ def full_table_format(
         # формирование строки таблицы
         rows.append(v_sep.join(
             f'{row[j]:{align}{c_width[j]}}' 
+            # j - индекс столбца таблицы
             for j in range(cnt_cols)
         ))
     
