@@ -1,0 +1,45 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 2
+
+class Vehicle {
+    +{static}name: <i>str</i>
+    +{static}wheels: <i>int</i>
+    +speed: <i>int</i>
+    __init__()
+    __repr__()
+}
+
+class Bike {
+    +{static}name: <i>str</i>
+    +{static}wheels: <i>int</i>
+}
+
+class Car {
+    +{static}name: <i>str</i>
+}
+
+class Train {
+    +{static}name: <i>str</i>
+    +{static}wheels: <i>int</i>
+    __init__()
+}
+
+class Aircraft {
+    +{static}name: <i>str</i>
+    +{static}wheels: <i>int</i>
+    +ground_speed: <i>int</i>
+    +air_speed: <i>int</i>
+    __init__()
+    __repr__()
+}
+
+hide class empty members
+
+Vehicle <|-- Bike
+Vehicle <|-- Car
+Vehicle <|-- Train
+Vehicle <|-- Aircraft : "некорректное\nнаследование"
+
+@enduml
