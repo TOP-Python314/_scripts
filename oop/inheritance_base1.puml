@@ -1,0 +1,23 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 2
+
+class Product {
+    {field}...
+    {method}...
+}
+
+abstract list
+
+class Fridge {
+    +clear_expired() → <i>None</i>
+}
+
+hide abstract empty members
+hide class empty members
+
+list <|-- Fridge
+Fridge o-left- Product
+
+@enduml
