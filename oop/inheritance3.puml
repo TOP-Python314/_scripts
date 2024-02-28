@@ -1,0 +1,30 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 2
+
+class Person {
+    -pattern_name: <i>re.Pattern</i>
+    +last_name: <i>str</i>
+    +first_name: <i>str</i>
+    +patr_name: <i>str</i>
+    __init__()
+    __repr__()
+}
+
+class Student {
+    +group: <i>str</i>
+    __init__()
+}
+
+class Teacher {
+    +groups: <i>tuple</i> [<i>str</i>, ...]
+    __init__()
+}
+
+hide class empty members
+
+Person <|-- Student
+Person <|-- Teacher
+
+@enduml
