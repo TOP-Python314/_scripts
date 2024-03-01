@@ -1,0 +1,47 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.5
+
+class A {
+    +attr
+    __init__()
+}
+
+class B {
+    +attr
+    __init__()
+}
+
+class C
+
+class D {
+    __init__()
+}
+
+class E {
+    +attr2
+    __init__()
+}
+
+class F
+
+class G {
+    __init__()
+}
+
+
+hide class empty members
+
+A <|-- C
+
+B <|-- D
+C <|-- D
+
+C <|-- F
+E <|-- F
+
+D <|-- G
+F <|-- G
+
+@enduml
