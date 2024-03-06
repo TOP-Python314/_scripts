@@ -1,0 +1,59 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.5
+
+abstract VirtualInstrument {
+    +{static}tones: <i>dict</i>
+    +{abstract}play() → <i>bytes</i>
+} 
+
+abstract Acoustic {
+    +{abstract}lowest_tone: <i>str</i>
+    +{abstract}highest_tone: <i>str</i>
+    +tone_in_range() → <i>bool</i>
+    +{abstract}attack() → <i>bytes</i>
+}
+
+abstract Synthetic {
+    +{abstract}modulate() → <i>bytes</i>
+}
+
+abstract Keyboard {
+    +{abstract}mechanics: <i>str</i>
+    +attack() → <i>bytes</i>
+}
+
+abstract String {
+    +{abstract}strings: tuple[str]
+    +attack() → <i>bytes</i>
+}
+
+class Piano {
+    +lowest_tone: <i>str</i>
+    +highest_tone: <i>str</i>
+    +mechanics: <i>str</i>
+    #samples_dir_path: <i>Path</i>
+    +play() → <i>bytes</i>
+}
+
+class Player {
+    +instrument: VirtualInstrument
+    +play()
+}
+
+hide abstract empty members
+hide class empty members
+
+VirtualInstrument <|-- Acoustic
+VirtualInstrument <|-- Synthetic
+
+Acoustic <|-- Keyboard
+Acoustic <|-- String
+
+Keyboard <|-- Piano
+
+Player o-right- VirtualInstrument
+' Player ..> VirtualInstrument
+
+@enduml
