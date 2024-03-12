@@ -54,7 +54,7 @@ skinparam backgroundColor 272822
   fontName $FONT_NAME
   fontSize $FONT_SIZE
   stereotypeFontColor $FONT_VERY_LIGHT
-  stereotypeFontSize $FONT_SIZE
+  stereotypeFontSize $FONT_SIZE_SMALLER
 !endprocedure
 
 !procedure icon_style()
