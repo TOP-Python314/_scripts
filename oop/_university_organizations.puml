@@ -1,0 +1,94 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1
+
+abstract list
+
+abstract OrganizationLevel {
+    +title: <i>str</i>
+    +description: <i>str</i>
+    +head: Administrator
+    +contact: Contact
+    #staff: <i>list</i> [Administrator]
+    .. <font size=12><i> getters  </i></font> ..
+    +staff() → <i>tuple</i> [Administrator, ...]
+}
+
+class Contact << dataclass >> {
+    +mobile: <i>str</i>
+    +office: <i>str</i>
+    +email: <i>str</i>
+    +telegram: <i>str</i>
+    +web: <i>str</i>
+    +address: <i>str</i>
+}
+
+class University {
+    <font size=12><font "Space Mono">Faculty</font>
+    --
+    +hr: HR
+    +auditoria: <i>list</i> [Auditorium]
+    --
+}
+
+class HR {
+    +hire()
+    +fire()
+}
+
+class Auditorium << dataclass >> {
+    +number: <i>str</i>
+    +description: <i>str</i>
+    +seats: <i>int</i>
+    +building: <i>str</i>
+}
+
+class Faculty {
+    <font size=12><font "Space Mono">Department</font>
+    --
+    --
+    +enroll_student()
+    +expell_student()
+}
+
+class Department {
+    <font size=12><font "Space Mono">Group</font>
+    --
+    +teachers: <i>list</i> [Teacher]
+    --
+}
+
+class Group {
+    <font size=12><font "Space Mono">Student</font>
+    --
+    +number: <i>str</i>
+    +semester: <i>int</i>
+    +chief: Student
+    +curator: Teacher
+    --
+}
+
+list <|-left- OrganizationLevel
+list <|-- Group
+
+OrganizationLevel o-left- Contact
+OrganizationLevel <|--- University
+OrganizationLevel <|--- Faculty
+OrganizationLevel <|--- Department
+OrganizationLevel <|-- HR
+
+University o-right- Faculty
+University o-up- HR
+University o-- Auditorium
+
+Faculty o-right- Department
+Department o-up- Group
+
+hide abstract empty members
+hide enum empty members
+hide Contact empty members
+hide HR empty members
+hide Auditorium empty members
+
+@enduml
