@@ -1,0 +1,214 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1
+
+abstract list1 as "list"
+abstract list2 as "list"
+
+abstract OrganizationLevel {
+    +title: <i>str</i>
+    +description: <i>str</i>
+    +head: Administrator
+    +contact: Contact
+    #staff: <i>list</i> [Administrator]
+    .. <font size=12><i> getters  </i></font> ..
+    +staff() → <i>tuple</i> [Administrator, ...]
+}
+
+class Contact << dataclass >> {
+    +mobile: <i>str</i>
+    +office: <i>str</i>
+    +email: <i>str</i>
+    +telegram: <i>str</i>
+    +web: <i>str</i>
+    +address: <i>str</i>
+}
+
+class University << singleton >> {
+    <font size=12><font "Space Mono">[Faculty]</font>
+    --
+    +hr: HR
+    +auditoria: <i>list</i> [Auditorium]
+    --
+}
+
+class HR {
+    +hire()
+    +fire()
+}
+
+class Auditorium << dataclass >> {
+    +number: <i>str</i>
+    +description: <i>str</i>
+    +seats: <i>int</i>
+    +building: <i>str</i>
+}
+
+class Faculty {
+    <font size=12><font "Space Mono">[Department]</font>
+    --
+    --
+    +enroll_student()
+    +expell_student()
+}
+
+class Department {
+    <font size=12><font "Space Mono">[Group]</font>
+    --
+    +teachers: <i>list</i> [Teacher]
+    --
+}
+
+class Group {
+    <font size=12><font "Space Mono">[Student]</font>
+    --
+    +number: <i>str</i>
+    +semester: <i>int</i>
+    +chief: Student
+    +curator: Teacher
+    --
+}
+
+abstract Person {
+    +last_name: <i>str</i>
+    +first_name: <i>str</i>
+    +patr_name: <i>str</i>
+    +birthdate: <i>date</i>
+    +contact: Contact
+}
+
+class Student {
+    +id: <i>str</i>
+    +form: EducationForm
+    +contract: ContractForm
+    #stipendia: <i>dec</i>
+    +gradebook: Gradebook
+    .. <font size=12><i> setters  </i></font> ..
+    +set_stipendia()
+}
+
+enum EducationForm {
+    INTRAMURAL
+    EXTRAMURAL
+    REMOTE
+}
+
+enum ContractForm {
+    BUDGET
+    COMPANY
+    PERSONAL
+}
+
+abstract dict
+
+class Gradebook {
+    <font size=12><font "Space Mono">{<i>str</i>: GradeRecord}</font>
+    --
+    +id: <i>str</i>
+    .. <font size=12><i> getters  </i></font> ..
+    +average() → <i>float</i>
+}
+
+class GradeRecord << dataclass >> {
+    +name: <i>str</i>
+    +date: <i>date</i>
+    +type: ExamType
+    +semester: <i>int</i>
+    +grade: <i>int</i>
+    +scale: <i>int</i>
+    +examiner: Teacher
+}
+
+enum ExamType {
+    CHECK
+    DIFF_CHECK
+    EXAMEN
+    PROJECT
+}
+
+abstract Employee {
+    +position: <i>str</i>
+    #income: <i>dec</i>
+    +joined: <i>date</i>
+    .. <font size=12><i> setters  </i></font> ..
+    +set_income()
+}
+
+class Teacher {
+    -previous_experience: <i>int</i>
+    +courses: <i>list</i> [<i>str</i> ]
+    +degree: Degree
+    +professor: <i>bool</i>
+    .. <font size=12><i> getters  </i></font> ..
+    +total_experience() → <i>int</i>
+    --
+    +make_examination()
+}
+
+enum Degree {
+    CANDIDATE
+    DOCTOR
+}
+
+class Administrator {
+    +subordinates: <i>list</i> [Employee]
+}
+
+list1 <|-up- OrganizationLevel
+list2 <|-- Group
+
+OrganizationLevel <|-up- University
+OrganizationLevel <|-up- Faculty
+OrganizationLevel <|-up- Department
+OrganizationLevel <|-right- HR
+OrganizationLevel o-left- Contact
+OrganizationLevel o-- Administrator
+
+University o-left- Faculty
+University o-- HR
+University o-up- Auditorium
+
+Faculty o-left- Department
+
+Department o-left- Group
+Department o-- Teacher
+
+Group o-- Student
+Group o-- Teacher
+
+Person <|-right- Student
+Person <|-- Employee
+Person o-right- Contact
+
+Employee <|-left- Teacher
+Employee <|-right- Administrator
+Employee -left-o Administrator
+
+Teacher *-- Degree
+Teacher --o GradeRecord
+Teacher .left.> Gradebook : "GradeRecord()"
+
+Student *-up- EducationForm
+Student *-up- ContractForm
+Student o-- Gradebook
+
+dict <|-right- Gradebook
+
+Gradebook *-- GradeRecord
+
+GradeRecord *-left- ExamType
+
+hide abstract empty members
+hide enum empty members
+hide Contact empty members
+hide GradeRecord empty members
+hide HR empty members
+hide Auditorium empty members
+
+EducationForm -[hidden]right- ContractForm
+University -[hidden]- list1
+Department -[hidden]- Student
+
+
+@enduml
