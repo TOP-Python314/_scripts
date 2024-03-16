@@ -1,0 +1,91 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.1
+
+abstract list1 as "list"
+abstract list2 as "list"
+abstract dict
+
+enum EducationForm
+enum ContractForm
+enum Degree
+enum ExamType
+
+abstract OrganizationLevel
+class University << singleton >> {
+    <font size=12><font "Space Mono">[Faculty]</font>
+}
+class Faculty {
+    <font size=12><font "Space Mono">[Department]</font>
+}
+class Department {
+    <font size=12><font "Space Mono">[Group]</font>
+}
+class Group {
+    <font size=12><font "Space Mono">[Student]</font>
+}
+class HR
+class Auditorium << dataclass >>
+
+class Contact << dataclass >>
+
+abstract Person
+abstract Employee
+class Teacher
+class Administrator
+class Student
+class Gradebook {
+    <font size=12><font "Space Mono">{<i>str</i>: GradeRecord}</font>
+}
+class GradeRecord << dataclass >>
+
+list1 <|-up- OrganizationLevel
+list2 <|-- Group
+
+OrganizationLevel <|-up- University
+OrganizationLevel <|-up- Faculty
+OrganizationLevel <|-up- Department
+OrganizationLevel <|-right- HR
+OrganizationLevel o-left- Contact
+OrganizationLevel o-- Administrator
+
+University o-left- Faculty
+University o-- HR
+University o-up- Auditorium
+
+Faculty o-left- Department
+
+Department o-left- Group
+Department o-- Teacher
+
+Group o-- Student
+Group o-- Teacher
+
+Person <|-right- Student
+Person <|-- Employee
+Person o-right- Contact
+
+Employee <|-left- Teacher
+Employee <|-right- Administrator
+Employee -left-o Administrator
+
+Teacher *-- Degree
+Teacher --o GradeRecord
+Teacher .left.> Gradebook : "GradeRecord()"
+
+Student *-up- EducationForm
+Student *-up- ContractForm
+Student o-- Gradebook
+
+dict <|-right- Gradebook
+
+Gradebook *-- GradeRecord
+
+GradeRecord *-left- ExamType
+
+hide abstract empty members
+hide enum empty members
+hide class empty members
+
+@enduml
