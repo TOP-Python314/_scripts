@@ -1,0 +1,83 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.25
+
+enum Color {
+    BLACK
+    RED
+    BLUE
+}
+
+enum Size {
+    SM
+    M
+    L
+}
+
+class Product << dataclass >> {
+    +name: <i>str</i>
+    +color: Color
+    +size: Size
+}
+
+abstract list1 as "list "
+abstract list2 as "list "
+
+' с нарушением
+' class Catalog {
+'     <font size=12><font "Space Mono">[Product]</font>
+'     --
+'     +filter_by_color() → <i>Generator</i>
+'     +filter_by_size() → <i>Generator</i>
+'     +filter_by_color_and_size() → <i>Generator</i>
+'     ...
+' }
+
+' без нарушения
+abstract Criteria {
+    +{abstract}match() → <i>bool</i>
+}
+
+class ColorCriteria {
+    +match() → <i>bool</i>
+}
+
+class SizeCriteria {
+    +match() → <i>bool</i>
+}
+
+class AndCriteria {
+    <font size=12><font "Space Mono">[Criteria]</font>
+    --
+    +match() → <i>bool</i>
+}
+
+class Catalog {
+    +filter() → <i>Generator</i>
+}
+
+hide abstract empty members
+hide class empty members
+hide enum empty members
+hide Product empty members
+
+left to right direction
+
+Product o-- Color
+Product o-- Size
+
+list1 <|-right- Catalog
+list2 <|-- AndCriteria
+
+Criteria <|-- ColorCriteria
+Criteria <|-- SizeCriteria
+Criteria <|-- AndCriteria
+Criteria ..> Product
+
+AndCriteria o-- Criteria 
+
+Catalog o-- Product
+Catalog .right.> Criteria
+
+@enduml
