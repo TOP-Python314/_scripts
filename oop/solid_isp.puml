@@ -1,0 +1,56 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.5
+
+class XeroxML10 {
+    +print()
+    +scan()
+    +fax()
+}
+
+' с нарушением
+' abstract MultiFunctionalDevice {
+'     +{abstract}print()
+'     +{abstract}scan()
+'     +{abstract}fax()
+' }
+' 
+' class Brother5250 {
+'     +print()
+'     +scan() → <i>NotImplementedError</i>
+'     +fax() → <i>NotImplementedError</i>
+' }
+
+
+' без нарушения
+abstract Printer {
+    +{abstract}print()
+}
+
+abstract Scanner {
+    +{abstract}scan()
+}
+
+abstract Fax {
+    +{abstract}fax()
+}
+
+class Brother5250 {
+    +print()
+}
+
+
+hide abstract empty members
+hide class empty members
+
+' MultiFunctionalDevice <|-- XeroxML10
+' MultiFunctionalDevice <|-- Brother5250
+
+XeroxML10 -up-|> Printer
+XeroxML10 -up-|> Scanner
+XeroxML10 -up-|> Fax
+
+Brother5250 -up-|> Printer
+
+@enduml
