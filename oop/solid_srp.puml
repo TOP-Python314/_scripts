@@ -1,0 +1,33 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.5
+
+abstract dict
+
+' с нарушением
+' class Journal {
+'     -{static}default_format: <i>str</i>
+'     -{static}default_path: <i>Path</i>
+'     +add_entry() → <i>None</i>
+'     +export_log_file() → <i>None</i>
+' }
+
+' без нарушения
+class Journal {
+    -{static}default_format: <i>str</i>
+    +add_entry() → <i>None</i>
+}
+
+class FileSystemIO {
+    -{static}default_journal_path: <i>Path</i>
+    +{static}export_log_file() → <i>Path</i>
+}
+
+hide abstract empty members
+
+dict <|-- Journal
+
+Journal .right.> FileSystemIO
+
+@enduml
