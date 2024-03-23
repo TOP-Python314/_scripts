@@ -1,0 +1,47 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.5
+
+class Rectangle {
+    -width: <i>float</i>
+    -height: <i>float</i>
+    -area: <i>float</i>
+    ..<font size=12><i> getters  </i></font>..
+    +width → <i>float</i>
+    +height → <i>float</i>
+    +area → <i>float</i>
+    ..<font size=12><i> setters  </i></font>..
+    +width()
+    +height()
+}
+
+class Test {
+    +test_model() → <i>None</i>
+}
+
+' с нарушением
+' class Square {
+'     ..<font size=12><i> setters  </i></font>..
+'     +width()
+'     +height()
+' }
+
+' без нарушения
+class Square {
+    -side: <i>float</i>
+    -area: <i>float</i>
+    ..<font size=12><i> getters  </i></font>..
+    +side → <i>float</i>
+    +area → <i>float</i>
+    ..<font size=12><i> setters  </i></font>..
+    +side()
+}
+
+hide class empty members
+
+' Rectangle <|-- Square
+
+Test .right.> Rectangle
+
+@enduml
