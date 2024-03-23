@@ -1,0 +1,46 @@
+@startuml
+
+!theme monokai_npp from ..\.styles
+scale 1.5
+
+class Person << dataclass >> {
+    +name: <i>str</i>
+    #id: <i>UUID</i>
+}
+
+enum Relation {
+    PARENT
+    CHILD
+}
+
+' с нарушением
+' class Relationship {
+'     +storage: <i>set</i> [<i>tuple</i> [Person, Relation, Person]]
+'     +add_relation() → <i>None</i>
+' }
+' 
+' class Research {
+'     +db: Relationship
+'     +find_all_children() → <i>Generator</i> [Person]
+' }
+
+' без нарушения
+class Relationship {
+    +storage: <i>set</i> [<i>tuple</i> [Person, Relation, Person]]
+    +add_relation() → <i>None</i>
+    +find_all_children() → <i>Generator</i> [Person]
+}
+
+class Research {
+    +db: Relationship
+}
+
+hide enum empty members
+hide class empty members
+
+Relationship o-- Person
+Relationship *-- Relation
+
+Research o-- Relationship
+
+@enduml
