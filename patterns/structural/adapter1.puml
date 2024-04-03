@@ -1,0 +1,44 @@
+@startuml
+
+!theme monokai_npp from ..\..\.styles
+scale 1.5
+
+package raster {
+    
+    interface RasterInterface {
+        +{abstract}draw()
+    }
+    
+    class RasterImage {
+        +path
+        -get_image()
+        +draw()
+    }
+    
+    class VectorToRasterAdapter {
+        +vector: VectorImage
+        +rasterize()
+        +draw()
+    }
+    
+}
+
+package vector {
+    
+    class VectorImage {
+        +path
+        +render()
+    }
+    
+}
+
+hide interface empty members
+
+RasterInterface <|-- RasterImage
+RasterInterface <|-- VectorToRasterAdapter
+
+VectorToRasterAdapter o-right- VectorImage
+
+RasterImage -[hidden]right- VectorToRasterAdapter
+
+@enduml
