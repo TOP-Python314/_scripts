@@ -1,0 +1,44 @@
+@startuml
+
+!theme monokai_npp from ..\..\.styles
+scale 2
+
+
+class CPU {
+    +{static}cooling()
+    +{static}read_register()
+    +{static}execute()
+}
+
+class RAM {
+    +{static}load()
+}
+
+class Drive {
+    +{static}read()
+}
+
+class Computer << facade >> {
+    +cpu: CPU
+    +ram: RAM
+    +drive: Drive
+    +start()
+}
+
+hide class empty members
+
+Computer o-left- CPU
+Computer o-up- RAM
+Computer o-- Drive
+
+' Computer::start ..> CPU::cooling
+' Computer::start ..> CPU::read_register
+' Computer::start ..> CPU::execute
+' Computer::start ..> RAM::load
+' Computer::start ..> Drive::read
+
+Computer .left.> CPU
+Computer .up.> RAM
+Computer ..> Drive
+
+@enduml
