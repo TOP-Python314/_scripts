@@ -2,8 +2,13 @@
 Controller (MVC): управляющий модуль, точка входа.
 """
 
+from sys import argv
+
 import model
-import view
+if 'gui' in argv:
+    import view_gui as view
+else:
+    import view_cli as view
 
 
 def start() -> None:
