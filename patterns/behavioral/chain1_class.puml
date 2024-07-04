@@ -1,0 +1,39 @@
+@startuml
+
+!theme monokai_npp from ..\..\.styles
+scale 2
+
+class Creature {
+    +name: <i>str</i>
+    +attack: <i>int</i>
+    +defense: <i>int</i>
+}
+
+class CreatureModifier {
+    +creature: Creature
+    +previous_modifier: CreatureModifier
+    +next_modifier: CreatureModifier
+    +add_modifier() → <i>None</i>
+    +handle() → <i>None</i>
+    +clear() → <i>None</i>
+    -undo() → <i>None</i>
+}
+
+class DoubleAttackModifier {
+    +handle() → <i>None</i>
+    -undo() → <i>None</i>
+}
+class IncreaseDefenseModifier {
+    +handle() → <i>None</i>
+    -undo() → <i>None</i>
+}
+
+hide class empty members
+
+CreatureModifier <|-- DoubleAttackModifier
+CreatureModifier <|-- IncreaseDefenseModifier
+
+CreatureModifier o-left- Creature
+CreatureModifier o-- CreatureModifier
+
+@enduml
