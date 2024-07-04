@@ -1,0 +1,113 @@
+@startuml
+
+!theme monokai_npp from ..\..\..\.styles
+scale 2
+
+enum Token {
+    X
+    O
+}
+
+interface list
+
+class Save << dataclass >> {
+    <font size=12><font "Space Mono">[(Player, <i>int</i>, Token)]</font>
+    --
+    +dim: <i>int</i>
+}
+
+class Player {
+    +{static}turn_funcs: <i>list</i> [<i>Callable</i> ]
+    +name: <i>str</i>
+    -bot_lvl: <i>int</i>  = 0
+    -stats: <i>tuple</i> [<i>int</i> , <i>int</i> , <i>int</i> ]
+    -saves: <i>list</i> [Save]
+    +get_turn() → <i>int</i>
+    +update_stats()
+}
+
+class Bot {
+    +get_easy() → <i>int</i>
+    +get_hard() → <i>int</i>
+    {method}...
+}
+
+class MainMenu {
+    +user: Player
+    #players: <i>list</i> [Players]
+    +mainloop() → <i>None</i>
+    -add_player()
+    -play()
+    -load()
+    -change_dim()
+    -show_table()
+    -update_stats()
+    {method}...
+}
+
+interface dict
+
+class Game {
+    <font size=12><font "Space Mono">{Player: <i>None</i> | Token}</font>
+    --
+    .. <font size=12><i> getters  </i></font> ..
+    +tokens() → <i>list</i> [<i>str</i> ]
+    .. <font size=12><i> methods  </i></font> ..
+    +get_turn()
+    -is_win() → <i>bool</i>
+    -is_tie() → <i>bool</i>
+}
+
+class FileIO {
+    +read_players()
+    +read_saves()
+    +write_players()
+    +write_saves()
+}
+
+class StdIO {
+    +{static}pat_name: <i>re.Pattern</i>
+    +get_command()
+    +get_player_name()
+    +get_player_turn()
+    +print_board()
+}
+
+class Board {
+    -dim: <i>int</i>
+    -template: <i>str</i>
+    __str__()
+}
+
+interface Exception
+
+class Tie
+
+hide abstract empty members
+hide enum empty members
+hide interface empty members
+hide class empty members
+
+MainMenu o-- Player
+MainMenu .up.> StdIO
+MainMenu .right.> Game
+
+dict <|-- Game
+
+Game o-- Player
+Game o-- Token
+Game .right.> Bot
+Game .up.> StdIO
+Game ..> FileIO
+Game .up.> Tie
+
+StdIO *-left- Board
+
+list <|-right- Save
+Player o-- Save
+
+Exception <|-- Tie
+
+Tie -[hidden]- Bot
+
+@enduml
