@@ -1,0 +1,51 @@
+@startuml
+
+!theme monokai_npp from ..\..\.styles
+scale 2
+
+abstract Patient << субъект >> {
+    +name: <i>str</i>
+    #monitors: <i>list</i> [Monitor]
+    +{abstract}get_parameter()
+    +{abstract}set_parameter()
+    +add_monitor()
+    +remove_monitor()
+    +update_monitors()
+}
+
+class COVIDPatient {
+    #parameters: <i>dict</i>
+    +get_parameter()
+    +set_parameter()
+}
+
+abstract Monitor << наблюдатель >> {
+    +{abstract}update()
+    +{static}info_message()
+    +{static}warn_message()
+    +{static}emrg_message()
+}
+
+class Thermometer {
+    +update()
+}
+
+class Heartbeat {
+    +update()
+}
+
+class Oxymeter {
+    +update()
+}
+
+hide abstract empty members
+hide class empty members
+
+Patient <|-- COVIDPatient
+Monitor <|-- Thermometer
+Monitor <|-- Heartbeat
+Monitor <|-- Oxymeter
+
+Patient o-right- Monitor
+
+@enduml
