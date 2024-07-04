@@ -1,0 +1,41 @@
+@startuml
+
+!theme monokai_npp from ..\..\.styles
+scale 2
+
+class BancAccount << адресат >> {
+    +{static}overdraft_limit: <i>dec</i>
+    +balance: <i>dec</i>
+    +deposit() → <i>None</i>
+    +withdraw() → <i>bool</i>
+}
+
+class BACommand << команда >> {
+    +account: BancAccount
+    +operation: Operation
+    +amount: <i>dec</i>
+    +success: <i>bool</i>
+    #log() → <i>None</i>
+    +execute() → <i>None</i>
+    +undo() → <i>None</i>
+}
+
+enum Operation {
+    DEPOSIT
+    WITHDRAW
+}
+
+class Logger {
+    +{static}default_log_path
+    +{static}append_log()
+}
+
+hide enum empty members
+
+BACommand o-left- BancAccount
+BACommand *-- Operation
+BACommand ..> Logger
+
+BancAccount -[hidden]- Operation
+
+@enduml
