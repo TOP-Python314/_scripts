@@ -1,0 +1,45 @@
+@startuml
+
+!theme monokai_npp from ..\..\.styles
+scale 2
+
+class Character << инициатор >> {
+    +name: <i>str</i>
+    +level: <i>int</i>
+    +health: <i>int</i>
+    +dead: <i>bool</i>
+    +position: <i>dict</i>
+    +inventory: <i>list</i>
+    ..<font size=12><i> getters </i></font>..
+    +state → CharacterState
+    ..<font size=12><i> setters </i></font>..
+    +state()
+    ..<font size=12><i> methods </i></font>..
+    +move() → <i>None</i>
+    +hit() → <i>None</i>
+    +level_up() → <i>None</i>
+    +pick_item() → <i>None</i>
+    +drop_item() → <i>None</i>
+}
+
+class CharacterState << хранитель >> {
+    +level: <i>int</i>
+    +health: <i>int</i>
+    +position: <i>dict</i>
+    +inventory: <i>list</i>
+}
+
+class SaveLoadMenu << опекун >> {
+    +character: Character
+    #saves: <i>list</i> [CharacterState]
+    -get_save_slot() → <i>int</i>
+    +save() → <i>None</i>
+    +load() → <i>None</i>
+}
+
+hide class empty members
+
+SaveLoadMenu o-- Character
+SaveLoadMenu o- CharacterState
+
+@enduml
